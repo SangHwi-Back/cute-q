@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ApiService } from 'src/common/apiService';
+import { ENDPOINTS } from 'src/common/endPoints';
 import {
   SeasonalDisclosure,
   SeasonalDisclosureResponse,
@@ -10,11 +11,10 @@ export class DisclosureService {
   constructor(private readonly apiService: ApiService) {}
 
   async getSeasonalDisclosure(params: SeasonalDisclosure) {
-    const url = 'https://opendart.fss.or.kr/api/list.json';
     const data = await this.apiService.get<
       SeasonalDisclosure,
       SeasonalDisclosureResponse
-    >(url, {
+    >(ENDPOINTS.DART_LIST, {
       ...params,
       crtfc_key: process.env.ENV_KEY_OPENDART as string,
     });
