@@ -117,3 +117,58 @@ export type SeasonalDisclosureItem = {
   /** 조합된 문자로 각각은 아래와 같은 의미가 있음 */
   rm: string;
 };
+
+/**
+ * OpenDART 공시문서 조회 요청 파라미터
+ * @property crtfc_key API 인증키(40자리)
+ * @property rcept_no 접수번호(14자리)
+ */
+export type DisclosureDocumentRequest = {
+  /** API 인증키(40자리) */
+  crtfc_key: string;
+  /** 접수번호(14자리) */
+  rcept_no: string;
+};
+
+export class DisclosureDocumentResponse {
+  /** 에러 및 정보 코드 */
+  status: string;
+  /** 에러 및 정보 메시지(코드) */
+  message: string;
+
+  /**
+   * message 코드에 따라 한글 메시지를 반환하는 getter
+   */
+  get readableMessage(): string {
+    switch (this.message) {
+      case '000':
+        return '정상';
+      case '010':
+        return '등록되지 않은 키입니다.';
+      case '011':
+        return '사용할 수 없는 키입니다. 오픈API에 등록되었으나, 일시적으로 사용 중지된 키를 통하여 검색하는 경우 발생합니다.';
+      case '012':
+        return '접근할 수 없는 IP입니다.';
+      case '013':
+        return '조회된 데이터가 없습니다.';
+      case '014':
+        return '파일이 존재하지 않습니다.';
+      case '020':
+        return '요청 제한을 초과하였습니다. 일반적으로는 20,000건 이상의 요청에 대하여 이 에러 메시지가 발생되나, 요청 제한이 다르게 설정된 경우에는 이에 준하여 발생됩니다.';
+      case '021':
+        return '조회 가능한 회사 개수가 초과하였습니다.(최대 100건)';
+      case '100':
+        return '필드의 부적절한 값입니다. 필드 설명에 없는 값을 사용한 경우에 발생하는 메시지입니다.';
+      case '101':
+        return '부적절한 접근입니다.';
+      case '800':
+        return '시스템 점검으로 인한 서비스가 중지 중입니다.';
+      case '900':
+        return '정의되지 않은 오류가 발생하였습니다.';
+      case '901':
+        return '사용자 계정의 개인정보 보유기간이 만료되어 사용할 수 없는 키입니다. 관리자 이메일(opendart@fss.or.kr)로 문의하시기 바랍니다.';
+      default:
+        return '알 수 없는 오류입니다.';
+    }
+  }
+}

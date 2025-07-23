@@ -1,4 +1,5 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import { Response } from 'express';
 import { DisclosureService } from './disclosure.service';
 import { DisclosureGuard } from './guard/disclosure.guard';
 import { Token } from './token/token.decorator';
@@ -31,5 +32,28 @@ export class DisclosureController {
       ...(sort && { sort }),
       ...(sortMth && { sort_mth: sortMth }),
     });
+  }
+
+  @Get('document/:rceptNo')
+  @UseGuards(DisclosureGuard)
+  async getDocument(
+    @Token() token: string,
+    @Query('rceptNo') rceptNo: string,
+    @Res() res: Response,
+  ) {
+    const data = await this.disclosureService.getDocument({
+      crtfc_key: token,
+      rcept_no: rceptNo,
+    });
+
+    const fileName = `${rceptNo}.xml`;
+
+    res.set({
+      'Content-Disposition': `attachment; filename=${fileName}`,
+      'Content-Type': 'application/xml',
+      'Content-Length': data.byteLength.toString(),
+    });
+
+    res.send(Buffer.from(data));
   }
 }
