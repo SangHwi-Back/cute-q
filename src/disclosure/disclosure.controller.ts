@@ -34,6 +34,22 @@ export class DisclosureController {
     });
   }
 
+  @Get('getCorpCode')
+  @UseGuards(DisclosureGuard)
+  async getCorpCode(@Token() token: string, @Res() res: Response) {
+    const data = await this.disclosureService.getCorpCode(token);
+
+    const fileName = `corp_code.zip`;
+
+    res.set({
+      'Content-Disposition': `attachment; filename=${fileName}`,
+      'Content-Type': 'application/zip',
+      'Content-Length': data.byteLength.toString(),
+    });
+
+    res.send(Buffer.from(data));
+  }
+
   @Get('document/:rceptNo')
   @UseGuards(DisclosureGuard)
   async getDocument(
