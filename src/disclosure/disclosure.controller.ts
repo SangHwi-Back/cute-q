@@ -72,4 +72,58 @@ export class DisclosureController {
 
     res.send(Buffer.from(data));
   }
+
+  @Get('singleAcntAll')
+  @UseGuards(DisclosureGuard)
+  async getSingleAcntAll(
+    @Token() token: string,
+    @Query('corp_code') corp_code: string,
+    @Query('bsns_year') bsns_year: string,
+    @Query('reprt_code') reprt_code: string,
+    @Query('fs_div') fs_div: string,
+  ) {
+    return this.disclosureService.getSingleAcntAll({
+      crtfc_key: token,
+      corp_code,
+      bsns_year,
+      reprt_code,
+      fs_div,
+    });
+  }
+
+  @Get('singleIndx')
+  @UseGuards(DisclosureGuard)
+  async getSingleIndx(
+    @Token() token: string,
+    @Query('corp_code') corp_code: string,
+    @Query('bsns_year') bsns_year: string,
+    @Query('reprt_code') reprt_code: string,
+    @Query('fs_div') fs_div: string,
+  ) {
+    return this.disclosureService.getSingleIndx({
+      crtfc_key: token,
+      corp_code,
+      bsns_year,
+      reprt_code,
+      fs_div,
+    });
+  }
+
+  @Get('cmpnyIndx')
+  @UseGuards(DisclosureGuard)
+  async getCmpnyIndx(
+    @Token() token: string,
+    @Query('corp_code') corp_code: string,
+    @Query('bsns_year') bsns_year: string,
+    @Query('reprt_code') reprt_code: string,
+    @Query('idx_cl_code') idx_cl_code: string,
+  ) {
+    return this.disclosureService.getCmpnyIndx({
+      crtfc_key: token,
+      corp_code,
+      bsns_year,
+      reprt_code,
+      idx_cl_code,
+    });
+  }
 }

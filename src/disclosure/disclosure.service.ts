@@ -5,7 +5,12 @@ import {
   SeasonalDisclosure,
   SeasonalDisclosureResponse,
   DisclosureDocumentRequest,
-  CorpCodeResponse,
+  SingleAcntAllRequest,
+  SingleAcntAllResponse,
+  SingleIndxRequest,
+  SingleIndxResponse,
+  CmpnyIndxRequest,
+  CmpnyIndxResponse,
 } from './dto/disclosure.dto';
 
 @Injectable()
@@ -46,6 +51,42 @@ export class DisclosureService {
       },
     );
 
+    return data;
+  }
+
+  async getSingleAcntAll(
+    params: SingleAcntAllRequest,
+  ): Promise<SingleAcntAllResponse> {
+    const data = await this.apiService.get<
+      SingleAcntAllRequest,
+      SingleAcntAllResponse
+    >(ENDPOINTS.DART_SINGLE_ACNT_ALL, {
+      ...params,
+      crtfc_key: process.env.ENV_KEY_OPENDART as string,
+    });
+
+    return data;
+  }
+
+  async getSingleIndx(params: SingleIndxRequest): Promise<SingleIndxResponse> {
+    const data = await this.apiService.get<
+      SingleIndxRequest,
+      SingleIndxResponse
+    >(ENDPOINTS.DART_SINGLE_INDX, {
+      ...params,
+      crtfc_key: process.env.ENV_KEY_OPENDART as string,
+    });
+    return data;
+  }
+
+  async getCmpnyIndx(params: CmpnyIndxRequest): Promise<CmpnyIndxResponse> {
+    const data = await this.apiService.get<CmpnyIndxRequest, CmpnyIndxResponse>(
+      ENDPOINTS.DART_CMPNY_INDX,
+      {
+        ...params,
+        crtfc_key: process.env.ENV_KEY_OPENDART as string,
+      },
+    );
     return data;
   }
 }

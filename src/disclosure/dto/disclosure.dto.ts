@@ -177,3 +177,166 @@ export function readableMessage(code: string): string {
       return '알 수 없는 오류입니다.';
   }
 }
+
+/**
+ * OpenDART 단일회사 전체 재무제표 조회 요청 파라미터
+ * @property crtfc_key API 인증키(필수)
+ * @property corp_code 고유번호(필수)
+ * @property bsns_year 사업연도(YYYY, 필수)
+ * @property reprt_code 보고서 코드(필수)
+ * @property fs_div 개별/연결구분(선택)
+ */
+export type SingleAcntAllRequest = {
+  crtfc_key: string;
+  corp_code: string;
+  bsns_year: string;
+  reprt_code: string;
+  fs_div: string;
+};
+
+/**
+ * OpenDART 단일회사 전체 재무제표 조회 응답 타입
+ * @property status 에러 및 정보 코드
+ * @property message 에러 및 정보 메시지
+ * @property list 재무제표 목록
+ */
+export type SingleAcntAllResponse = {
+  status: string;
+  message: string;
+  list: SingleAcntAllItem[];
+};
+
+/**
+ * 단일회사 전체 재무제표 항목
+ */
+export type SingleAcntAllItem = {
+  rcept_no: string;
+  corp_code: string;
+  corp_name: string;
+  stock_code: string;
+  reprt_code: string;
+  bsns_year: string;
+  corp_cls: string;
+  fs_div: string;
+  fs_nm: string;
+  sj_div: string;
+  sj_nm: string;
+  account_id: string;
+  account_nm: string;
+  account_detail: string;
+  thstrm_nm: string;
+  thstrm_amount: string;
+  thstrm_add_amount: string;
+  frmtrm_nm: string;
+  frmtrm_amount: string;
+  frmtrm_q_nm: string;
+  frmtrm_q_amount: string;
+  frmtrm_add_amount: string;
+  bfefrmtrm_nm: string;
+  bfefrmtrm_amount: string;
+  ord: string;
+};
+
+/**
+ * OpenDART 단일회사 주요재무정보 조회 요청 파라미터
+ * @property crtfc_key API 인증키(필수)
+ * @property corp_code 고유번호(필수)
+ * @property bsns_year 사업연도(YYYY, 필수)
+ * @property reprt_code 보고서 코드(필수)
+ * @property fs_div 개별/연결구분(선택)
+ */
+export type SingleIndxRequest = {
+  crtfc_key: string;
+  corp_code: string;
+  bsns_year: string;
+  reprt_code: string;
+  fs_div: string;
+};
+
+/**
+ * OpenDART 단일회사 주요재무정보 조회 응답 타입
+ * @property status 에러 및 정보 코드
+ * @property message 에러 및 정보 메시지
+ * @property list 주요재무정보 목록
+ */
+export type SingleIndxResponse = {
+  status: string;
+  message: string;
+  list: SingleIndxItem[];
+};
+
+/**
+ * 단일회사 주요재무정보 항목
+ */
+export type SingleIndxItem = {
+  rcept_no: string;
+  corp_code: string;
+  corp_name: string;
+  stock_code: string;
+  reprt_code: string;
+  bsns_year: string;
+  corp_cls: string;
+  fs_div: string;
+  fs_nm: string;
+  sj_div: string;
+  sj_nm: string;
+  account_id: string;
+  account_nm: string;
+  account_detail: string;
+  thstrm_nm: string;
+  thstrm_amount: string;
+  frmtrm_nm: string;
+  frmtrm_amount: string;
+  bfefrmtrm_nm: string;
+  bfefrmtrm_amount: string;
+  ord: string;
+};
+
+/**
+ * OpenDART 회사 전체 주요재무정보 조회 요청 파라미터
+ * @property crtfc_key API 인증키(필수)
+ * @property bsns_year 사업연도(YYYY, 필수)
+ * @property reprt_code 보고서 코드(필수)
+ */
+export type CmpnyIndxRequest = {
+  crtfc_key: string;
+  corp_code: string;
+  bsns_year: string;
+  reprt_code: string;
+  idx_cl_code: string;
+};
+
+/**
+ * OpenDART 회사 전체 주요재무정보 조회 응답 타입
+ */
+export type CmpnyIndxResponse = {
+  status: string;
+  message: string;
+  list: CmpnyIndxItem[];
+};
+
+/**
+ * 회사 전체 주요재무정보 항목
+ */
+export type CmpnyIndxItem = {
+  corp_code: string;
+  corp_name: string;
+  stock_code: string;
+  reprt_code: string;
+  bsns_year: string;
+  corp_cls: string;
+  fs_div: string;
+  fs_nm: string;
+  sj_div: string;
+  sj_nm: string;
+  account_id: string;
+  account_nm: string;
+  account_detail: string;
+  thstrm_nm: string;
+  thstrm_amount: string;
+  frmtrm_nm: string;
+  frmtrm_amount: string;
+  bfefrmtrm_nm: string;
+  bfefrmtrm_amount: string;
+  ord: string;
+};
