@@ -1,8 +1,18 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Res,
+  UseGuards,
+  Body,
+  Post,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { DisclosureService } from './disclosure.service';
 import { DisclosureGuard } from './guard/disclosure.guard';
 import { Token } from './token/token.decorator';
+import { SeasonalDisclosureQueryDto } from './dto/disclosure.dto';
+import { ValidationPipe } from '@nestjs/common';
 
 @Controller('disclosure')
 export class DisclosureController {
@@ -12,25 +22,19 @@ export class DisclosureController {
   @UseGuards(DisclosureGuard)
   async seasonalKOSDAQDisclosure(
     @Token() token: string,
-    @Query('corpCls') corpCls?: string,
-    @Query('pbIntfTy') pbIntfTy?: string,
-    @Query('corpCode') corpCode?: string,
-    @Query('lastReprtAt') lastReprtAt?: string,
-    @Query('bgnDe') bgnDe?: string,
-    @Query('endDe') endDe?: string,
-    @Query('sort') sort?: string,
-    @Query('sortMth') sortMth?: string,
+    @Query(new ValidationPipe({ transform: true }))
+    query: SeasonalDisclosureQueryDto,
   ) {
     return this.disclosureService.getSeasonalDisclosure({
       crtfc_key: token,
-      ...(corpCls && { corp_cls: corpCls }),
-      ...(pbIntfTy && { pblntf_ty: pbIntfTy }),
-      ...(corpCode && { corp_code: corpCode }),
-      ...(bgnDe && { bgn_de: bgnDe }),
-      ...(endDe && { end_de: endDe }),
-      ...(lastReprtAt && { last_reprt_at: lastReprtAt }),
-      ...(sort && { sort }),
-      ...(sortMth && { sort_mth: sortMth }),
+      ...(query.corpCls && { corp_cls: query.corpCls }),
+      ...(query.pbIntfTy && { pblntf_ty: query.pbIntfTy }),
+      ...(query.corpCode && { corp_code: query.corpCode }),
+      ...(query.bgnDe && { bgn_de: query.bgnDe }),
+      ...(query.endDe && { end_de: query.endDe }),
+      ...(query.lastReprtAt && { last_reprt_at: query.lastReprtAt }),
+      ...(query.sort && { sort: query.sort }),
+      ...(query.sortMth && { sort_mth: query.sortMth }),
     });
   }
 
@@ -125,5 +129,15 @@ export class DisclosureController {
       reprt_code,
       idx_cl_code,
     });
+  }
+
+  @Post('saveClose')
+  async saveClose(@Body() body: { symbol: string; date: string }) {
+    const close = this.disclosureService.fetchKRXClosePrice(
+      body.symbol,
+      body.date,
+    );
+    await this.disclosureService.saveClosePrice(body.symbol, body.date, close);
+    return { symbol: body.symbol, date: body.date, close };
   }
 }

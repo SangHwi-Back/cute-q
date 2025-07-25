@@ -340,3 +340,40 @@ export type CmpnyIndxItem = {
   bfefrmtrm_amount: string;
   ord: string;
 };
+
+import { IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+
+export class SeasonalDisclosureQueryDto {
+  @IsOptional()
+  @IsString()
+  corpCls?: string;
+
+  @IsOptional()
+  @IsString()
+  pbIntfTy?: string;
+
+  @IsOptional()
+  @IsString()
+  corpCode?: string;
+
+  @IsOptional()
+  @IsString()
+  lastReprtAt?: string;
+
+  @IsOptional()
+  @IsString()
+  bgnDe?: string;
+
+  @IsOptional()
+  @IsString()
+  endDe?: string;
+
+  @IsOptional()
+  @IsString()
+  sort?: string;
+
+  @IsOptional()
+  @IsString()
+  sortMth?: string;
+}
